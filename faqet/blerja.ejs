@@ -1,0 +1,80 @@
+<%- include('navbar.ejs', {perdoruesi: perdoruesi}) %>
+
+
+<div class="fatura">
+    <div class="fatura-header">
+        <img src="https://gjirafa50.com/Gjirafa50/Content/images/logo-2.svg" width="100" alt="">
+        <h4><strong>Numri i Fatures: # <%= blerja.id %></strong></h4>
+        <h4>Data: <%= blerja.data_e_blerjes %></h4>
+    </div>
+
+    <hr>
+
+    <div class="fatura-body">
+        <table>
+            <thead>
+                <th>Foto</th>
+                <th>Produkti</th>
+                <th>Sasia</th>
+                <th>Cmimi</th>
+                <th>Totali</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <img src="<%= blerja.foto %>" width="40" height="40" alt="">
+                    </td>
+                    <td><%= blerja.emri %></td>
+                    <td><%= blerja.sasia %></td>
+                    <td><%= blerja.cmimi %> $</td>
+                    <td><%= blerja.cmimi_total %> $</td>
+                </tr>
+                
+            </tbody>
+        </table>
+
+        <hr>
+
+        <h4>Bleresi: <%= perdoruesi.emri %></h4>
+        <h4>Email: <%= perdoruesi.email %></h4>
+        <h4>Numri: +383 49 123 456</h4>
+
+        <hr>
+
+        <div class="totali">Totali: <%= blerja.cmimi_total %> $</div>
+    </div>
+</div>
+
+
+<style>
+    h4 {
+        margin-top: 10px;
+        margin-bottom: 5px;
+    }
+
+    .fatura {
+        background-color: white;
+        width: 60%;
+        margin: 0 auto;
+        margin-top: 50px;
+        padding: 2%;
+    }
+
+    table {
+        width: 100%;
+    }
+
+    th {
+        text-align: left;
+    }
+
+    .totali {
+        width: 30%;
+        background-color: orange;
+        padding: 10px 20px;
+        font-size: 23px;
+        color: white;
+        text-align: center;
+        /* float: right; */
+    }
+</style>

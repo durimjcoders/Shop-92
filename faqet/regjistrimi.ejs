@@ -1,0 +1,135 @@
+<%- include('navbar.ejs', {perdoruesi: false}) %>
+
+<form id="forma-register">
+    <label for="">Emri</label>
+    <input type="text" name="emri" required>
+
+    <label for="">Emaili</label>
+    <input type="email" name="email" required>
+
+    <label for="">Fjalekalimi</label>
+    <input type="password" name="password" required>
+
+    <button type="button" id="regjistrohuButton">Regjistrohu</button>
+</form>
+
+<script>
+
+let buttoni = document.getElementById('regjistrohuButton')
+
+
+buttoni.addEventListener('click', function() {
+    let emri = document.getElementsByName('emri')[0].value
+    let email = document.getElementsByName('email')[0].value
+    let password = document.getElementsByName('password')[0].value
+
+    let data = {
+        emri: emri,
+        email: email,
+        password: password
+    }
+
+    // if(password.length < 8) {
+    //     return alert("Fjalekalimi duhet t'i kete te pakten 8 shkronja")
+    // }
+
+    const regex = new RegExp(
+        `^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d@$!%*?&]{8,}$`
+    );
+
+    let valid_password = regex.test(password)
+
+
+    if(!valid_password) {
+        return alert("Fjalkalimi nuk eshte valid")
+    } 
+
+    fetch("/register", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    }).then(response => {
+        return response.json()
+    }).then(data => {
+        console.log("data", data)
+
+        if (data.is_error) {
+            alert("Mesazhi : " + data.mesazhi)
+        } else {
+            window.location.href = '/login'
+        }
+    })
+
+})
+
+
+
+// fetch("/register", {
+//     method: 'POST',
+//     body: JSON.stringify(data)
+// })
+//   .then(response => {
+//     if (!response.ok) {
+//       throw new Error(`HTTP error! Status: ${response.status}`);
+//     }
+//     return response.json(); // Parse the response JSON
+//   })
+//   .then(data => {
+//     // Handle the data from the response
+//     console.log('Response data:', data);
+//   })
+//   .catch(error => {
+//     // Handle any errors that occurred during the fetch
+//     console.error('Fetch error:', error);
+//   });
+</script>
+
+
+
+<style>
+/* Apply basic styles to the form */
+#forma-register {
+    max-width: 400px;
+    margin: 0 auto;
+    margin-top: 40px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: black;
+    box-shadow: var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow);
+
+}
+
+/* Style labels */
+#forma-register label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: white;
+}
+
+/* Style input fields */
+#forma-register input[type="text"],
+#forma-register input[type="email"],
+#forma-register input[type="password"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+/* Style button */
+#forma-register button {
+    padding: 10px 15px;
+    background-color: orange;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+
+</style> 

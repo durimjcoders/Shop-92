@@ -1,0 +1,107 @@
+<%- include('navbar.ejs', {perdoruesi: false}) %>
+
+<form id="forma-login">
+    <label for="">Emaili</label>
+    <input type="text" name="email">
+
+    <label for="">Fjalekalimi</label>
+    <input type="password" name="password">
+
+    <button type="button" id="kycuButtoni">Kycu</button>
+</form>
+
+
+<script>
+    let buttoni = document.getElementById('kycuButtoni')
+
+    buttoni.addEventListener('click', function() {
+        let email = document.getElementsByName('email')[0].value
+        let password = document.getElementsByName('password')[0].value
+
+        if(email == "") {
+            return alert("Emaili nuk duhet te jete i zbrazet")
+        }
+
+        if(password == "") {
+            return alert("Fjalekalimi nuk duhet te jete i zbrazet")
+        }
+
+        // const regex = `/^[^@\s]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/`;
+
+
+        // if(!regex.test(email)) {
+        //     return alert("Emaili nuk eshte valid")
+        // }
+
+
+        fetch("/login", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: email,
+                password: password
+            })
+        }).then(response => {
+            return response.json()
+        }).then(data => {
+            console.log("data", data)
+
+
+            if (data.error) {
+                alert(data.mesazhi)
+                return
+            }
+
+            window.location.href = '/'
+        })
+    })
+
+</script>
+
+
+<style>
+/* Apply basic styles to the form */
+#forma-login {
+    max-width: 400px;
+    margin: 0 auto;
+    margin-top: 40px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: black;
+    box-shadow: var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow);
+
+}
+
+/* Style labels */
+#forma-login label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: white;
+}
+
+/* Style input fields */
+#forma-login input[type="text"],
+#forma-login input[type="password"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+/* Style button */
+#forma-login button {
+    padding: 10px 15px;
+    background-color: orange;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+
+</style> 

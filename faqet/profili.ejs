@@ -1,0 +1,96 @@
+<%- include('navbar.ejs', { perdoruesi: perdoruesi }) %>
+
+<div class="kutia-profili">
+    
+    <label>Emri</label>
+    <br>
+    <input type="text" name="emri" value="<%= perdoruesi.emri %>">
+
+    <br><br>
+
+    <label>Email</label>
+    <br>
+    <input type="email" name="email" value="<%= perdoruesi.email %>">
+
+    <br><br>
+
+    <label>Fjalekalimi Aktual</label>
+    <br>
+    <input type="password" name="password_aktual">
+
+    <br><br>
+
+    <label>Fjalekalimi i Ri</label>
+    <br>
+    <input type="password" name="password_new">
+
+    <br><br>    
+
+    <button id="profili-button" style="width: 100%;">Ruaj Ndryshimet</button>
+
+</div>
+
+<script>
+
+    let buttoni = document.querySelector("#profili-button")
+
+    buttoni.addEventListener('click', function() {
+        let emri = document.querySelector('[name="emri"]').value
+        let email = document.querySelector('[name="email"]').value
+        let password_aktual = document.querySelector('[name="password_aktual"]').value
+        let password_new = document.querySelector('[name="password_new"]').value
+
+
+        const regex = new RegExp(
+            `^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d@$!%*?&]{8,}$`
+        );
+
+        let valid_new_password = regex.test(password_new)
+
+        if(!valid_new_password) {
+            return alert("Fjalekalimi i ri nuk eshte valid")
+        }
+
+
+
+        let data = {
+            emri: emri,
+            email: email,
+            password_aktual: password_aktual,
+            password_new: password_new
+        }
+
+
+        fetch("/ndrysho_profilin", {
+            method: 'POST',
+            body: JSON.stringify(data)
+        }).then(function(response) {
+            return response.json()
+        }).then(function(data) {
+            if(data.error) {
+                alert(data.mesazhi)
+            } else {
+                window.location.reload()
+            }
+        })
+    })
+
+
+</script>
+
+
+<style>
+    .kutia-profili {
+        background-color: white;
+        width: 30%;
+        margin: 0 auto;
+        margin-top: 40px;
+        height: 300px;
+        padding: 2%;
+    }
+
+    input {
+        width: 100%;
+        padding: 2%;
+    }
+</style>

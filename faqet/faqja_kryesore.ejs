@@ -1,0 +1,96 @@
+<%- include('navbar.ejs', { perdoruesi: perdoruesi }) %>
+
+
+<div id="kutia-produktet">
+
+    <% produktet.forEach(function(produkti) { %>
+
+    <div class="produkti">
+        <!-- <img src="<%= produkti.foto %>" alt=""> -->
+
+        <div class="img-produkt" style="background: url('<%= produkti.foto %>'); 
+            background-size: contain; background-repeat: no-repeat; background-position: center;">
+
+        </div>
+
+        <h2><%= produkti.emri %></h2>
+        <h4><%= produkti.cmimi %>$</h4>
+        <a href="/produkti/<%= produkti.id %>">Shiko Detajet</a>
+    </div>
+
+    <% }) %>
+
+</div>
+
+
+
+<style>
+    #kutia-produktet {
+        display: grid;
+        grid-template-columns: auto auto auto auto;
+        padding: 50px;
+    }
+
+    .produkti {
+        /* border: 1px solid; */
+        margin: 5px;
+        height: 400px;
+        max-width: 300px;
+        background-color: white;
+        box-shadow: var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow);
+    }
+
+    .produkti .img-produkt { 
+        width: 300px;
+        height: 200px;
+    
+    }
+
+    .produkti h4, .produkti h2 {
+        padding: 0px 10px;
+    }
+
+    .produkti a {
+        background-color: orange;
+        padding: 10px 10px;
+        margin: 10px;
+        color: white;
+        text-decoration: none;
+    }
+
+    body {
+        margin: 0;
+    }
+
+    #logo {
+        width: 100px;
+    }
+
+    #nav-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: black;
+        padding: 10px;
+    }
+
+    form {
+        margin: 0;
+    }
+
+    input {
+        background-color: #4b4b4b;
+        border: 0px;
+        border-radius: 15px;
+        padding: 10px 40px;
+        padding-left: 10px;
+        color: white;
+    }
+
+    button {
+        background-color: orange;
+        padding: 10px;
+        border: none;
+        color: white;
+    }
+</style>

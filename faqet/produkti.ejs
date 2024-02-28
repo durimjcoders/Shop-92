@@ -1,0 +1,203 @@
+<%- include('navbar.ejs') %>
+
+
+<style>
+
+    h1.mesazhi-stok {
+        position: relative;
+        top: 50%;
+        left: 50%;
+        transform: translate(-29%, -50%); 
+        z-index: 100;
+    }
+
+    img {
+        margin-right: 20px;
+    }
+
+    .e-shitur {
+        opacity: 60%;
+    }
+
+</style>
+
+<div class="box">
+
+    <%
+        let klasa_shitur = ''
+
+        if(produkti.stoku == 0) {
+            klasa_shitur = 'e-shitur'
+        }
+    %>
+
+
+    <div id="fotoja">
+
+        <% if(produkti.stoku == 0) { %>
+        <h1 class="mesazhi-stok">NUK KA NE STOK</h1>
+        <% } %>
+
+        <img class="<%= klasa_shitur %>" width="500s" src="<%= produkti.foto %>" alt="">
+    </div>
+
+
+    <div id="detajet">
+
+        <div>
+            <h1><%= produkti.emri %></h1>
+            <p><%= produkti.pershkrimi %></p>
+            <hr>
+            
+            <h3>Kategoria: <%= produkti.kategoria %></h3>
+
+            <h3><%= produkti.cmimi %> $</h3>
+            <h3>Cmimi Total: <span id="total-span"><%= produkti.cmimi %></span> $</h3>
+            <form action="">
+
+                <input type="hidden" id="cmimi" name="cmimi" value="<%= produkti.cmimi %>">
+                <input type="hidden" id="produkti_id" name="produkti_id" value="<%= produkti.id %>">
+
+                <% if(produkti.stoku > 0) {  %>
+                <div>
+                    <button type="button" class="sasia-button minus-button">-</button>
+                    <input id="sasia" name="sasia"  type="number" value="1" min="1">
+                    <button type="button" class="sasia-button plus-button">+</button>
+                </div>
+                <% } %>
+
+
+                <p>Total artikuj: <%= produkti.stoku %></p>
+
+                <br>
+
+                <div>
+                    <% if(produkti.stoku > 0) {  %>
+                        <button type="button" id="blej-button">Blej Tani</button>
+                    <% } %>
+
+                    <button type="button" id="info-button">Me shume informata...</button>
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+    
+</div>
+
+
+<script>
+
+    let minus_button = document.querySelector('.minus-button')
+    let plus_button =  document.querySelector('.plus-button')
+
+    minus_button.addEventListener('click', function() {
+        let sasia = document.querySelector("#sasia")
+        let cmimi = document.querySelector("#cmimi")
+
+
+        if (sasia.value > 1) {
+            sasia.value--
+
+            let cmimi_total = (cmimi.value * sasia.value).toFixed(2)
+
+            document.querySelector("#total-span").innerHTML = cmimi_total
+        }
+    })
+
+    plus_button.addEventListener('click', function() {
+        let sasia = document.querySelector("#sasia")
+        let cmimi = document.querySelector("#cmimi")
+
+        sasia.value++
+
+        let cmimi_total = (cmimi.value * sasia.value).toFixed(2)
+
+        document.querySelector("#total-span").innerHTML = cmimi_total
+    })
+
+
+    let blejButton = document.querySelector('#blej-button')
+
+    blejButton.addEventListener('click', function() {
+        let sasia = document.querySelector('#sasia').value
+        let produkti_id = document.querySelector("#produkti_id").value
+
+        let total_artikuj = +'<%= produkti.stoku %>'
+
+
+        if(sasia > total_artikuj) {
+            return alert("Sasia e lejuar e blerjes eshte " + total_artikuj)
+        }
+
+
+        let blerja = {
+            produkti_id: produkti_id,
+            sasia: sasia
+        }
+
+        fetch('/blej_produktin', {
+            method: 'POST',
+            body: JSON.stringify(blerja)
+        }).then(function(response) {
+            return response.json()
+        }).then(function(data) {
+            if(data.error) {
+                return alert(data.mesazhi)
+            } else {
+                // alert(data.mesazhi)
+                window.location.href = "/blerja/" + data.blerja_id 
+            }
+        })
+        
+    })
+
+</script>
+
+
+
+<style>
+    .box {
+        background-color: white;
+        margin: 50px 100px;
+        padding: 1%;
+        display: flex;
+        justify-content: center;
+    }
+
+    #blej-button {
+        width: 200px;
+    }
+
+    #info-button {
+        background-color: white;
+        border: 1px solid orange;
+        color: black;
+        width: 200px;
+    }
+
+    .sasia-button {
+        background: white;
+        border: 1px solid gray;
+        color: black;
+        width: 40px;
+        height: 40px;
+        cursor: pointer;
+    }
+
+    .minus-button {
+        margin-right: -5px;
+    }
+
+    .plus-button {
+        margin-left: -5px;
+    }
+
+    #sasia {
+        width: 40px;
+        height: 40px;
+    }
+</style>
+
+
