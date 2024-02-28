@@ -3,6 +3,7 @@ const app = express()
 const session = require('express-session')
 
 // Ndryshim nga GitHub
+console.log("Hello From GitHub")
 
 const {
     faqjaKryesore,
