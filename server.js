@@ -27,7 +27,7 @@ app.set('view engine', 'ejs')
 app.set('views', 'faqet')
 
 app.use(session({
-    secret: 'secret',
+    secret: 'secret_super_sekret',
     resave: false,
     saveUninitialized: false
 }))
