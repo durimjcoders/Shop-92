@@ -1,5 +1,8 @@
 const mysql2 = require('mysql2')
 
+
+console.log("Ndyshim per git")
+
 const connection = mysql2.createConnection({
     host: 'localhost',
     port: 3306,
@@ -105,7 +108,11 @@ function regjistroPerdorues(req, res) {
     let email = data.email
     let password = data.password
 
-    let query_email = `SELECT id FROM perdoruesit WHERE email = "${email}"`
+    let query_email = `SELECT 
+                            id 
+                        FROM 
+                        perdoruesit 
+                        WHERE email = "${email}"`
 
     connection.query(query_email, function(err1, results1) {
         if(results1.length > 0) {
